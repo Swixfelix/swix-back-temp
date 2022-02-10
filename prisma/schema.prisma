@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = "mysql://swixadmin:6SlqemmpugVqhzvYc7hm@dbswix.c2vosgupc5cx.us-east-1.rds.amazonaws.com:3306/dbtest"
+}
+
+model nights {
+  nightID String  @id @db.VarChar(255)
+  price   Decimal @db.Decimal(10, 0)
+  availab Boolean
+}
+
+
+ 
+model propertyOffChain {
+  id              Int             @id @default(autoincrement())
+  leaseID         String          @db.VarChar(255)
+  Params          String?         @db.Text
+  city            String          @db.VarChar(255)
+  noOfRooms       Int
+  propertyOnChain propertyOnChain @relation(fields: [leaseID], references: [leaseID], onDelete: NoAction, onUpdate: NoAction, map: "propertyOffChain_ibfk_1")
+
+  @@index([leaseID], map: "leaseID")
+}
+
+model propertyOnChain {
+  leaseID              String               @id @db.VarChar(255)
+  leaseIndex           Int
+  city_address         String               @db.Text
+  numberOfGuests       Int
+  duration             Int
+  cancel_policyID      Int
+  start_timestamp      DateTime?            @default(now()) @db.Timestamp(0)
+  tb_cancelationPolicy tb_cancelationPolicy @relation(fields: [cancel_policyID], references: [cancel_policyID], onDelete: NoAction, onUpdate: NoAction, map: "propertyOnChain_ibfk_1")
+  propertyOffChain     propertyOffChain[]
+
+  @@index([cancel_policyID], map: "cancel_policyID")
+}
+
+model tb_bookings {
+  bookingID        String  @id @db.VarChar(12)
+  user_address     String  @db.VarChar(255)
+  end              Int
+  fullRefundUntil  Int     @default(0)
+  halfRefundUntil  Int     @default(0)
+  bookingPrice     Int
+  tokenbackRate    Int     @default(0)
+  kycHash          String  @db.VarChar(255)
+  swixConfirmation Boolean
+  status           Int     @default(0)
+}
+
+model tb_cancelationPolicy {
+  cancel_policyID Int               @id
+  descrp          String?           @db.Text
+  parameters      String?           @db.Text
+  propertyOnChain propertyOnChain[]
+}
+
+model tb_city {
+  id           Int     @id @default(autoincrement())
+  cityName     String? @db.VarChar(255)
+  cityCode     String  @db.Char(10)
+  city_address String  @db.VarChar(255)
+}
