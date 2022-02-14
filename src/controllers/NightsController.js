@@ -8,7 +8,7 @@ async createNights(req,res) {
         try {
             const { nightID, price, availab } = req.body
 
-            let night = await prisma.tb_bookings.findUnique({ where: { nightID } })
+            let night = await prisma.nights.findUnique({ where: { nightID } })
     
             if(night){
                 return res.json({error: "Night already created"})
@@ -31,65 +31,53 @@ async createNights(req,res) {
         }
 },
 
-async findAllBookings(req, res) {
+async findAllNights(req, res) {
     try {
-        const bookings = await prisma.tb_bookings.findMany()
-        return res.json(bookings)
+        const nights = await prisma.nights.findMany()
+        return res.json(nights)
     } catch (error) {
         return res.json(error)
     }
     
 }, 
 
-async findBooking(req, res) {
+async findNights(req, res) {
     try {
 
-        console.log('params'+ req.params)
 
-        const {bookingID} = req.params;
+        const {nightID} = req.params;
 
         
         //console.log('aqui' + bookingID)
 
-        const booking = await prisma.tb_bookings.findUnique({where: {bookingID: bookingID } })
+        const night = await prisma.nights.findUnique({where: {nightID: nightID } })
 
-        if(!booking) return res.json({error: "não possível"})
+        if(!night) return res.json({error: "não possível"})
 
-        return res.json(booking)
+        return res.json(night)
     } catch (error) {
         return res.json(error)
     }
     
 },
 
-async updateBooking(req,res) {
+async updateNights(req,res) {
     try {
-        const {bookingID} = req.params;
-        const {  user_address,    
-            end ,            
-            fullRefundUntil ,
-            halfRefundUntil ,
-            bookingPrice    , 
-            tokenbackRate  ,
-            kycHash          ,
-            swixConfirmation  } = req.body
+        const {nightID} = req.params;
+        const {  price, availab  } = req.body
 
-        let booking = await prisma.tb_bookings.findUnique({where: {bookingID: bookingID  } })
-        if(!booking) return res.json({error: "não possível"})
+        let night = await prisma.nights.findUnique({where: {nightID: nightID  } })
+        if(!night) return res.json({error: "não possível"})
 
-        booking = await prisma.tb_bookings.update({
-            where: {bookingID: bookingID},
-            data: {user_address,    
-                end ,            
-                fullRefundUntil ,
-                halfRefundUntil ,
-                bookingPrice    , 
-                tokenbackRate  ,
-                kycHash          ,
-                swixConfirmation}
+        night = await prisma.nights.update({
+            where: {nightID: nightID},
+            data: {
+                price, 
+                availab
+            }
         })
 
-        return res.json(booking);
+        return res.json(night);
     } catch (error) {
         return res.json({error})
     }

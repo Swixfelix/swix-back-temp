@@ -35,7 +35,7 @@ model propertyOnChain {
   cancel_policyID      Int
   start_timestamp      DateTime?            @default(now()) @db.Timestamp(0)
   tb_cancelationPolicy tb_cancelationPolicy @relation(fields: [cancel_policyID], references: [cancel_policyID], onDelete: NoAction, onUpdate: NoAction, map: "propertyOnChain_ibfk_1")
-  propertyOffChain     propertyOffChain[]
+  propertyOffChain       propertyOffChain[]
 
   @@index([cancel_policyID], map: "cancel_policyID")
 }
