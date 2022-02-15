@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "mysql"
-  url      = "mysql://swixadmin:6SlqemmpugVqhzvYc7hm@dbswix.c2vosgupc5cx.us-east-1.rds.amazonaws.com:3306/dbtest"
+  url      = ""
 }
 
 model nights {
