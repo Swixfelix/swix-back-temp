@@ -6,6 +6,15 @@ import PropertyOnChain  from './controllers/PropertyOnChain';
 
 const router = Router()
 
+
+//test
+
+app.get('/', (req, res) => {
+    res.send('Hello World!')
+  })
+
+
+
 // Booking Routes
 router.post("/booking", BookingController.createBooking)
 router.get("/findAllBookings", BookingController.findAllBookings)
